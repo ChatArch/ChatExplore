@@ -2,18 +2,19 @@
 
 This scaffold was generated from the `cli-style` template.
 
-Use this file as the first handoff note for the model or developer after initialization.
+The package now has an established root-only CLI baseline.
 
-## Initial Checklist
+## Current Contract
 
-1. Confirm the project goal and target users.
-2. Update `README.md` to match the actual package purpose.
-3. Decide whether this package needs a CLI, library API, or both.
-4. Add or remove folders from the scaffold as needed.
-5. Expand tests using the doc-first conventions in `tests/cli-tests/` and `tests/mock-cli-tests/`.
+- Distribution and import module: `chatexplore`
+- Console script and explicit Click root: `chatexplore`
+- Shared tree runtime: `chatstyle>=0.2.0,<0.3.0`
+- Public root options: `--help`, `--version`, `--tree`, `--tree-brief`
+- Business commands: none registered yet
 
-## Suggested Next Edits
+## Expansion Rule
 
-- Replace the placeholder description for `chatexplore`.
-- Add concrete commands or module structure.
-- Add CI steps that match the real project needs.
+Do not add placeholder commands. Add an importable, typed Python operation
+first, then a thin Click command whose inputs, outputs, side effects, and
+security boundary are documented and tested. Keep the registered full/brief
+trees, README, docs, changelog, CI, and release checks synchronized.

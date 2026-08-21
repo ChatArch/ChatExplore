@@ -5,17 +5,32 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "chatexplore"
 dynamic = ["version"]
-description = "chatexplore package"
+description = "ChatArch exploration CLI package shell"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 license = "MIT"
-dependencies = ["click>=8.0", "chatstyle"]
+dependencies = [
+    "click>=8.0,<9.0",
+    "chatstyle>=0.2.0,<0.3.0",
+]
 authors = [{name = "rexwzh", email = "1073853456@qq.com"}]
-keywords = ["chatexplore", "cli"]
+keywords = ["chatexplore", "chatarch", "cli", "exploration"]
 classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
 ]
+
+[project.optional-dependencies]
+dev = [
+    "build>=1.2,<2.0",
+    "pytest>=8.0,<10.0",
+    "twine>=6.0,<7.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/ChatArch/ChatExplore"
+Repository = "https://github.com/ChatArch/ChatExplore"
+Issues = "https://github.com/ChatArch/ChatExplore/issues"
 
 [project.scripts]
 chatexplore = "chatexplore.cli:main"

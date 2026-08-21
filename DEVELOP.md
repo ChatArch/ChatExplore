@@ -1,22 +1,40 @@
 # Development Guide
 
-## CLI Rules
+## Shared CLI Runtime
 
-- Missing required args should auto-enter interactive mode when recoverable.
-- `-i` forces interactive mode; `-I` disables prompting and must fail fast.
-- Prompt defaults must match actual execution defaults.
-- Sensitive values must stay masked in prompts and summaries.
-- Prefer lazy imports in CLI wiring and keep implementation imports local when possible.
+- Keep the public root explicit as `chatexplore`.
+- Keep `chatstyle>=0.2.0,<0.3.0` and use `add_tree_option()` for the registered
+  `--tree` and `--tree-brief` views. Do not add a package-local tree renderer.
+- Keep the CLI adapter thin. Add importable typed Python functions before
+  exposing business commands.
+- Missing required inputs may use ChatStyle interaction only when recovery is
+  unambiguous. Non-interactive use must fail cleanly instead of blocking.
+- Keep sensitive values out of prompts, summaries, trees, and logs.
+- ChatExplore currently has no env, profile, or config behavior. If that
+  changes, register a typed ChatEnv provider and use
+  `chatenv>=0.2.10,<0.3.0` with ChatEnv storage paths.
 
 ## Docs and Tests
 
-- Use doc-first CLI testing.
-- Put real CLI coverage under `tests/cli-tests/`.
-- Put mock/fake CLI coverage under `tests/mock-cli-tests/`.
+- Use doc-first CLI testing with `click.testing.CliRunner`.
+- Assert that full and brief trees come from the real command registry.
 - Keep `README.md`, `docs/`, and `CHANGELOG.md` in sync with user-facing changes.
 
 ## Automation
 
-- Keep automation small and reviewable.
-- Prefer commands that can run in CI without interactive prompts.
-- Ensure generated defaults are safe for local development.
+Run the complete local gate before proposing a release:
+
+```bash
+python -m pytest -q
+python -m build
+python -m twine check dist/*
+chatexplore --version
+chatexplore --tree
+chatexplore --tree-brief
+git diff --check
+```
+
+CI must exercise the installed console script. Releases use the tag-driven
+trusted-publishing workflow: merge a green PR, tag the merged `main` commit
+with the package version, verify the publish workflow, then clean-install the
+exact PyPI version and repeat all three CLI readbacks without `PYTHONPATH`.
